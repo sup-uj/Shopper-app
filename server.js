@@ -32,7 +32,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 mongoose.connect('mongodb://localhost:27017/Shoppers');
 
 //schema
-const Users = mongoose.model('Users', { username: String, password: String });
+const Users = mongoose.model('Users', { 
+    username: String, 
+    password: String,
+    cartProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'saleProducts' }]
+ });
 const saleProducts = mongoose.model('saleProducts', { name: String, category: String, price: String, quantity: Number, description: String, image: String });
 
 app.use(cors());
@@ -76,7 +80,7 @@ app.post('/login', (req, res) => {
                     const token = jwt.sign({
                         data: result
                     }, 'KEY', { expiresIn: '1h' });
-                    res.send({ message: 'found successfully', token: token });
+                    res.send({ message: 'find success.', token: token, userId: result._id });
                 }
                 if (result.password != password) {
                     res.send({ message: 'incorrect password' })
@@ -117,6 +121,20 @@ app.get('/get-product', (req, res) => {
     }).catch((err) => {
         res.send({ message: 'server error' })
     })
+})
+
+
+app.post('/add-cart', upload.single('image'), async (req, res) => {
+    let productId = req.body.productId;
+    let userId = req.body.userId;
+
+    Users.updateOne({ _id: userId }, { $addToSet: { cartProducts: productId } })
+        .then(() => {
+            res.send({ message: 'add-to-cart success.' })
+        })
+        .catch(() => {
+            res.send({ message: 'server err' })
+        })
 })
 
 app.listen(port, () => {
