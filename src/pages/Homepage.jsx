@@ -141,7 +141,7 @@ const HomePage = () => {
         })}
       </div>
 
-      {/* <Carousel></Carousel>     */}
+      {/* <Carousel></Carousel>*/}
     </>
   )
 }
