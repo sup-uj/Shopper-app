@@ -6,6 +6,8 @@ import HomePage from './pages/Homepage.jsx';
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Login from './pages/LoginPage.jsx';
 import Signup from './pages/SignupPage.jsx';
+import SellItemPage from './pages/SellItemPage.jsx';
+import SideBarPage from './pages/Sidebarpage.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,10 +20,10 @@ function App() {
           <Route  path="/" element={<HomePage/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
-          {/* <Route  path="/sidebar" element={<SideBarPage/>}></Route>
-          <Route  path="/profile" element={<ProfilePage/>}></Route>
-          <Route  path="/profileupdate" element={<ProfileUpdatePage/>}></Route>
           <Route  path="/sell" element={<SellItemPage/>}></Route>
+          <Route  path="/sidebar" element={<SideBarPage/>}></Route>
+          {/* <Route  path="/profile" element={<ProfilePage/>}></Route>
+          <Route  path="/profileupdate" element={<ProfileUpdatePage/>}></Route>
           <Route  path="/lend" element={<LendItemPage/>}></Route>
           <Route  path="/history" element={<History/>}></Route>
           <Route  path="/sold" element={<SoldPage/>}></Route>
