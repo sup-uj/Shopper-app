@@ -147,6 +147,18 @@ app.post('/cart', (req, res) => {
         })
 })
 
+app.get('/productdetails/:productId',(req,res)=>{
+    console.log(req.params);
+    
+    saleProducts.findOne({ _id: req.params.productId })
+        .then((result) => {
+            res.send({ message: 'success', product: result })
+        })
+        .catch((err) => {
+            res.send({ message: 'server err' })
+        })
+})
+
 app.listen(port, () => {
     console.log(`listening to the port ${port}`);
 })

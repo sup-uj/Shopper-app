@@ -98,6 +98,9 @@ const Product = (props) => {
             })
     }
 
+    const details=(id)=>{
+        navigate('/productdetails/'+id);
+    }
 
     return (
         <>
@@ -106,21 +109,22 @@ const Product = (props) => {
             <div className='flex justify-center flex-wrap gap-2 mt-[133px]'>
                 {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
                     return (
-                        <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            <a href="#">
+                        <div onClick={()=>details(item._id)}
+                        className="hover:cursor-pointer w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            {/* <a href="#"> */}
                                 <img height=''
                                     className="p-8 rounded-t-lg"
                                     src={'http://localhost:3000/' + item.image}
                                     alt="product image"
                                 />
-                            </a>
+                            {/* </a> */}
                             <div className="px-5 pb-5">
-                                <a href="#">
+                                {/* <a href="#"> */}
                                     <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                                         <span >{item.name}</span> | {item.category}
 
                                     </h5>
-                                </a>
+                                {/* </a> */}
                                 <div className="flex items-center mt-2.5 mb-5">
                                     <div className="flex items-center space-x-1 rtl:space-x-reverse">
                                         <svg
