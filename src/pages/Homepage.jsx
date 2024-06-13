@@ -1,9 +1,6 @@
-// import { View, Text } from 'react-native'
-// import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import HeroSection from '../components/hero.jsx';
 import NavSection from '../components/nav.jsx';
-// import Carousel from '../Components/gallery.jsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 // import Category from '../Components/Categories.js';
@@ -54,18 +51,32 @@ const HomePage = () => {
 
   const click = () => {
     // console.log('clicked');
-    console.log('temp1', temp_pdt);
-    settemp_pdt(products);
-    console.log('products', products);
-    console.log('temp', temp_pdt);
-    let filteredPdts = products.filter((item) => {
-      if (item.name.toLowerCase().includes(search.toLowerCase()) || item.price.toLowerCase().includes(search.toLowerCase()) || item.description.toLowerCase().includes(search.toLowerCase()) || item.category.toLowerCase().includes(search.toLowerCase())) {
-        return item;
-      }
-    })
-    console.log('filtered',filteredPdts);
-    settemp_pdt(filteredPdts);
-    console.log('temp_pdt',temp_pdt);
+    // console.log('temp1', temp_pdt);
+    // settemp_pdt(products);
+    // console.log('products', products);
+    // console.log('temp', temp_pdt);
+    // let filteredPdts = products.filter((item) => {
+    //   if (item.name.toLowerCase().includes(search.toLowerCase()) || item.price.toLowerCase().includes(search.toLowerCase()) || item.description.toLowerCase().includes(search.toLowerCase()) || item.category.toLowerCase().includes(search.toLowerCase())) {
+    //     return item;
+    //   }
+    // })
+    // console.log('filtered',filteredPdts);
+    // settemp_pdt(filteredPdts);
+    // console.log('temp_pdt',temp_pdt);
+
+    const url = 'http://localhost:3000/search?search='+search;
+    axios.get(url)
+        .then((res) => {
+            // console.log(res); 
+            settemp_pdt(res.data.products)
+            // if (res.data.message) {
+            //     alert('Item added.')
+            // }
+        })
+        .catch((err) => {
+            alert('Server Err.')
+        })
+
   }
 
   const filters=(val)=>{
@@ -111,7 +122,7 @@ const HomePage = () => {
       <NavSection search={search} searchItem={searchItem} click={click} />
       {/* <Category filters={filters} /> */}
       <HeroSection ></HeroSection>
-      <div className='flex justify-center flex-wrap gap-2'>
+      <div className='flex justify-center flex-wrap gap-2'> 
         {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
           return (
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

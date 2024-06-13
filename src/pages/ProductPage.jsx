@@ -44,18 +44,33 @@ const Product = (props) => {
     const click = () => {
         // console.log('clicked');
         // console.log('temp1', temp_pdt);
-        settemp_pdt(products);
+        // settemp_pdt(products);
         // console.log('products', products);
         // console.log('temp', temp_pdt);
-        let filteredPdts = products.filter((item) => {
-            if (item.name.toLowerCase().includes(search.toLowerCase()) || item.price.toLowerCase().includes(search.toLowerCase()) || item.description.toLowerCase().includes(search.toLowerCase()) || item.category.toLowerCase().includes(search.toLowerCase())) {
-                return item;
-            }
-        })
-        // console.log('filtered', filteredPdts);
-        settemp_pdt(filteredPdts);
-        // console.log('temp_pdt', temp_pdt);
-    }
+        // let filteredPdts = products.filter((item) => {
+        //   if (item.name.toLowerCase().includes(search.toLowerCase()) || item.price.toLowerCase().includes(search.toLowerCase()) || item.description.toLowerCase().includes(search.toLowerCase()) || item.category.toLowerCase().includes(search.toLowerCase())) {
+        //     return item;
+        //   }
+        // })
+        // console.log('filtered',filteredPdts);
+        // settemp_pdt(filteredPdts);
+        // console.log('temp_pdt',temp_pdt);
+    
+        const url = 'http://localhost:3000/search?search='+search;
+        axios.get(url)
+            .then((res) => {
+                // console.log(res); 
+                settemp_pdt(res.data.products)
+                // if (res.data.message) {
+                //     alert('Item added.')
+                // }
+            })
+            .catch((err) => {
+                alert('Server Err.')
+            })
+    
+      }
+     
 
 
     const filters = (val) => {

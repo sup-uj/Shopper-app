@@ -159,6 +159,55 @@ app.get('/productdetails/:productId',(req,res)=>{
         })
 })
 
+
+app.get('/search',(req,res)=>{
+    let search=req.query.search;
+    // console.log(search);
+    let searchRegex = new RegExp(search, 'i');
+    // console.log(req.query);
+    // return;
+    saleProducts.find({
+        $or: [
+            { name: { $regex: searchRegex } },
+            { description: { $regex: searchRegex } },
+            { category: { $regex: searchRegex  } },
+        ],
+    })
+    .then((results) => {
+        // console.log(results, 'user data');
+        res.send({ message: 'success', products: results })
+    }).catch((err) => {
+        res.send({ message: 'server error' })
+    })
+
+})
+
+// app.get('/search', (req, res) => {
+//     let search = req.query.search;
+
+//     // Create a case-insensitive regular expression
+//     let searchRegex = new RegExp(search, 'i');
+
+//     // Perform the search using the regular expression
+//     saleProducts.find({
+//         $or: [
+//             { name: { $regex: searchRegex } },
+//             { description: { $regex: searchRegex } },
+//             { price: search }, // Assuming price is a string field
+//             {category:{$regex: searchRegex}}
+//         ],
+//     })
+//     .then((results) => {
+//         console.log(results,'res')
+//         res.send({ message: 'success', products: results });
+//     })
+//     .catch((err) => {
+//         console.error('Error:', err);
+//         res.status(500).send({ message: 'Server error' });
+//     });
+// });
+
+
 app.listen(port, () => {
     console.log(`listening to the port ${port}`);
 })
