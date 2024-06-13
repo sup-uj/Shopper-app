@@ -9,6 +9,7 @@ import Signup from './pages/SignupPage.jsx';
 import SellItemPage from './pages/SellItemPage.jsx';
 import SideBarPage from './pages/Sidebarpage.jsx';
 import Product from './pages/ProductPage.jsx';
+import Cart from './pages/CartPage.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +25,7 @@ function App() {
           <Route  path="/sell" element={<SellItemPage/>}></Route>
           <Route  path="/sidebar" element={<SideBarPage/>}></Route>
           <Route  path="/products" element={<Product/>}></Route>
+          <Route  path="/cart" element={<Cart/>}></Route>
           {/* <Route  path="/profile" element={<ProfilePage/>}></Route>
           <Route  path="/profileupdate" element={<ProfileUpdatePage/>}></Route>
           <Route  path="/lend" element={<LendItemPage/>}></Route>
@@ -31,8 +33,7 @@ function App() {
           <Route  path="/sold" element={<SoldPage/>}></Route>
           <Route  path="/lent" element={<LentPage/>}></Route>
           <Route  path="/purchased" element={<PurchasedPage/>}></Route>
-          <Route  path="/borrowed" element={<BorrowedPage/>}></Route>
-          <Route  path="/cart" element={<CartProducts/>}></Route> */}
+          <Route  path="/borrowed" element={<BorrowedPage/>}></Route> */}
         </Routes>
       </BrowserRouter>
     </>

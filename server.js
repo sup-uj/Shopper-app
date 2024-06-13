@@ -137,6 +137,16 @@ app.post('/add-cart', upload.single('image'), async (req, res) => {
         })
 })
 
+app.post('/cart', (req, res) => {
+    Users.findOne({ _id: req.body.userId }).populate('cartProducts')
+        .then((result) => {
+            res.send({ message: 'success', products: result.cartProducts })
+        })
+        .catch((err) => {
+            res.send({ message: 'server err' })
+        })
+})
+
 app.listen(port, () => {
     console.log(`listening to the port ${port}`);
 })

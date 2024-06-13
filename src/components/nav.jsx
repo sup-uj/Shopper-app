@@ -19,14 +19,16 @@ const NavSection = (props) => {
                     <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MNNIT SHOPPERS</span>
                 </Link>
-                <div className="flex gap-3 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                    <Link to='/cart' className='flex item-center gap-0'>
 
-                        <img src={cart_icon} alt="" />
-                        <div className="gap-0 w-[22px] h-[22px] flex justify-center items-center mt-[-3px] ml-[-5px] rounded-[11px] text-14 bg-red-500 text-white">
-                            0
-                        </div>
-                    </Link>
+                <div className="flex gap-3 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                    {localStorage.getItem('token')&&
+                        <Link to='/cart' className='flex item-center gap-0'>
+
+                            <img src={cart_icon} alt="" />
+                            <div className="gap-0 w-[22px] h-[22px] flex justify-center items-center mt-[-3px] ml-[-5px] rounded-[11px] text-14 bg-red-500 text-white">
+                                0
+                            </div>
+                        </Link>}
                     {!localStorage.getItem('token') ? <Button color="light"><Link to='/login'>Login</Link></Button> : <Button color="light" onClick={logout}>Logout</Button>}
 
                     {!localStorage.getItem('token') ? <button type="button" className="mt-0 mr-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link to='/signup'>Sign Up</Link>
