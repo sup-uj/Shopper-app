@@ -41,13 +41,29 @@ const ProductDetails = () => {
     //         })
     // }
 
+    const Contact = (addedby) => {
+        console.log('id', addedby)
+        const url = API_URL + '/get-user/' + addedby;
+        axios.get(url)
+            .then((res) => {
+                if (res.data.user) {
+                    setuser(res.data.user)
+                }
+            })
+            .catch((err) => {
+                alert('Server Err.')
+            })
+    }
+
+
+
     return (<>
         <NavSection></NavSection>
         PRODUCT DETAILS :
         <div >
             {product && <div className="mt-[45px] d-flex justify-content-between flex-wrap">
                 <div>
-                    <img width="400px" height="200px" src={'http://localhost:3000'+ '/' + product.image} alt="" />
+                    <img width="400px" height="200px" src={'http://localhost:3000' + '/' + product.image} alt="" />
                     <h6> Product Details : </h6>
                     {product.description}
                 </div>
@@ -55,14 +71,17 @@ const ProductDetails = () => {
                     <h3 className="m-2 price-text"> Rs. {product.price} /- </h3>
                     <p className="m-2"> {product.name}  | {product.category} </p>
                     <p className="m-2 text-success"> {product.description} </p>
-
+                    {product.addedBy &&
+                        <button onClick={() => Contact(product.addedBy)}>
+                            SHOW CONTACT DETAILS
+                        </button>}
 
                 </div>
             </div>}
         </div>
     </>
 
-  )
+    )
 }
 
 export default ProductDetails

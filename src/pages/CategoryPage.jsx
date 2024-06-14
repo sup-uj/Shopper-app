@@ -1,20 +1,26 @@
 import { React, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import NavSection from '../components/nav';
 import Category from '../components/categories';
 import { useState } from 'react';
-const Product = (props) => {
+
+
+const CategoryPage = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             navigate('/login')
         }
     }, [])
+
+    const params=useParams();
+    console.log(params);
+
     const [products, setproducts] = useState([]);
 
     useEffect(() => {
-        const url = 'http://localhost:3000/get-product';
+        const url = 'http://localhost:3000/get-product?catname='+params.catname;
         axios.get(url).then((result) => {
             // console.log(result);
             if (result.data.products) {
@@ -24,7 +30,7 @@ const Product = (props) => {
             console.log(err);
             alert('Server error');
         })
-    }, [])
+    }, [params])
 
     const [temp_pdt, settemp_pdt] = useState([]);
 
@@ -122,7 +128,7 @@ const Product = (props) => {
             <NavSection search={search} searchItem={searchItem} click={click} />
             <Category  filters={filters}/>
             <div className='flex justify-center flex-wrap gap-2 mt-[133px]'>
-                {/* {temp_pdt&&temp_pdt.length==0&&<h1 className='font-size-[40px]'>No Match</h1>} */}
+                {temp_pdt&&temp_pdt.length==0&&<h1 className='font-size-[40px]'>No Match</h1>}
                 {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
                     return (
                         <div onClick={()=>details(item._id)}
@@ -182,4 +188,4 @@ const Product = (props) => {
 
 }
 
-export default Product
+export default CategoryPage

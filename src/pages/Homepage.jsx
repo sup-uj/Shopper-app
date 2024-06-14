@@ -122,7 +122,7 @@ const HomePage = () => {
       <NavSection search={search} searchItem={searchItem} click={click} />
       {/* <Category filters={filters} /> */}
       <HeroSection ></HeroSection>
-      <div className='flex justify-center flex-wrap gap-2'> 
+      <div className='flex justify-center flex-wrap gap-2 mt-[10px]'> 
         {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
           return (
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

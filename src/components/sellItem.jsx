@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Label, FileInput } from 'flowbite-react';
+import category from './category';
 
 
 function SellItem() {
@@ -34,13 +35,14 @@ function SellItem() {
         // formdata.description=description;
         // formdata.image=image;
 
-        const formdata= new FormData();
+        const formdata = new FormData();
         formdata.append('name', name);
         formdata.append('category', category);
         formdata.append('price', price);
         formdata.append('quantity', quantity);
         formdata.append('description', description);
         formdata.append('image', image);
+        formdata.append('userId', localStorage.getItem('userId'));
         // console.log(formdata.name);
         const url = 'http://localhost:3000/sell';
         // console.log("clicked");
@@ -57,7 +59,7 @@ function SellItem() {
         console.log(formdata);
         axios.post(url, formdata).then((result) => {
             console.log(result);
-            if(result.data.message){
+            if (result.data.message) {
                 alert(result.data.message);
                 navigate('/')
             }
@@ -70,18 +72,13 @@ function SellItem() {
 
     return (
         <div>
-            {/* <div className="flex justify-center m-5">
-    <button id="SellButton" data-modal-target="SellBtn" data-modal-toggle="SellBtn" className="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-    Sell product
-    </button>
-</div> */}
             <div id="SellBtn" tabIndex="-1" aria-hidden="true" className="overflow-y-auto overflow-x-hidden justify-center items-center w-full md:inset-0 h-modal md:h-full">
                 <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
                     <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <div className="flex justify-center items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                                 Sell Product
-                            </h3> 
+                            </h3>
                         </div>
                         {/* <form action="#"> */}
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
@@ -108,6 +105,13 @@ function SellItem() {
                                         <option value="Books">Books</option>
                                         <option value="Coolers">Coolers</option>
                                         <option value="Cycle">Cycle</option>
+                                        {/* {
+                                            category && category.length > 0 && category.map((item, index) => {
+                                                return (
+                                                    <option key={'option' + index}>{item}</option>
+                                                )
+                                            })
+                                        } */}
                                     </select>
                                 </div>
                                 <div>
@@ -131,7 +135,6 @@ function SellItem() {
                             </div>
                             <div>
                                 <label htmlFor="photo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
-                                {/* <Dropzone /> */}
                                 <div className="flex w-full items-center justify-center">
                                     <Label
                                         htmlFor="dropzone-file"

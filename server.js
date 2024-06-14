@@ -37,7 +37,15 @@ const Users = mongoose.model('Users', {
     password: String,
     cartProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'saleProducts' }]
  });
-const saleProducts = mongoose.model('saleProducts', { name: String, category: String, price: String, quantity: Number, description: String, image: String });
+const saleProducts = mongoose.model('saleProducts', { 
+    name: String,
+    category: String,
+    price: String, 
+    quantity: Number, 
+    description: String, 
+    image: String,
+    addedby:mongoose.Schema.Types.ObjectId
+ });
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -104,7 +112,8 @@ app.post('/sell', upload.single('image'), (req, res) => {
     const quantity = req.body.quantity;
     const description = req.body.description;
     const image = req.file.path;
-    const spdt = new saleProducts({ name: name, category: category, price: price, quantity: quantity, description: description, image: image });
+    const addedby=req.body.userId;
+    const spdt = new saleProducts({ name: name, category: category, price: price, quantity: quantity, description: description, image: image ,addedby});
     spdt.save().then(() => {
         res.send({ message: 'saved successfully' })
 
@@ -115,8 +124,16 @@ app.post('/sell', upload.single('image'), (req, res) => {
 
 
 app.get('/get-product', (req, res) => {
-    saleProducts.find().then((result) => {
-        console.log(result, 'user data');
+
+    const catname=req.query.catname;
+    let O={};
+    if(catname){
+        O={category:catname}
+    }
+    console.log(catname);
+
+    saleProducts.find(O).then((result) => {
+        // console.log(result, 'user data');
         res.send({ message: 'success', products: result })
     }).catch((err) => {
         res.send({ message: 'server error' })
@@ -182,30 +199,6 @@ app.get('/search',(req,res)=>{
 
 })
 
-// app.get('/search', (req, res) => {
-//     let search = req.query.search;
-
-//     // Create a case-insensitive regular expression
-//     let searchRegex = new RegExp(search, 'i');
-
-//     // Perform the search using the regular expression
-//     saleProducts.find({
-//         $or: [
-//             { name: { $regex: searchRegex } },
-//             { description: { $regex: searchRegex } },
-//             { price: search }, // Assuming price is a string field
-//             {category:{$regex: searchRegex}}
-//         ],
-//     })
-//     .then((results) => {
-//         console.log(results,'res')
-//         res.send({ message: 'success', products: results });
-//     })
-//     .catch((err) => {
-//         console.error('Error:', err);
-//         res.status(500).send({ message: 'Server error' });
-//     });
-// });
 
 
 app.listen(port, () => {

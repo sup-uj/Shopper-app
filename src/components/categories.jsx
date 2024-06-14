@@ -1,8 +1,10 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 let Categories = ['Furniture', 'Stationary', 'Electronics', 'Coolers', 'Books', 'Cycle'];
+
 const Category = (props) => {
+    const navigate=useNavigate()
     return (
         <div className="fixed top-0 w-[100%] mt-[73px] bg-white border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -15,8 +17,10 @@ const Category = (props) => {
                         return (
                             <span
                                 onClick={() => {
-                                    props.filters && props.filters(item)
+                                    navigate('/category/'+item)
+                                    // props.filters && props.filters(item)
                                 }}
+                                key={index}
                                 className='p-5 cursor-pointer'>{item}
                             </span>
                         )

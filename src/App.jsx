@@ -11,6 +11,7 @@ import SideBarPage from './pages/Sidebarpage.jsx';
 import Product from './pages/ProductPage.jsx';
 import Cart from './pages/CartPage.jsx';
 import ProductDetails from './pages/ProductDetailsPage.jsx';
+import CategoryPage from './pages/CategoryPage.jsx';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         {/* <NavSection></NavSection> */}
         <Routes>
           <Route  path="/" element={<HomePage/>}></Route>
+          <Route  path="/category/:catname" element={<CategoryPage/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/signup' element={<Signup/>}></Route>
           <Route  path="/sell" element={<SellItemPage/>}></Route>
