@@ -32,20 +32,22 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 mongoose.connect('mongodb://localhost:27017/Shoppers');
 
 //schema
-const Users = mongoose.model('Users', { 
-    username: String, 
+const Users = mongoose.model('Users', {
+    username: String,
     password: String,
+    email: String,
+    mobile: String,
     cartProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'saleProducts' }]
- });
-const saleProducts = mongoose.model('saleProducts', { 
+});
+const saleProducts = mongoose.model('saleProducts', {
     name: String,
     category: String,
-    price: String, 
-    quantity: Number, 
-    description: String, 
+    price: String,
+    quantity: Number,
+    description: String,
     image: String,
     addedby: mongoose.Schema.Types.ObjectId,
- });
+});
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -60,7 +62,9 @@ app.post('/signup', (req, res) => {
     // return ;
     const username = req.body.username;
     const password = req.body.password;
-    const user = new Users({ username: username, password: password });
+    const email = req.body.email;
+    const mobile = req.body.mobile;
+    const user = new Users({ username: username, password: password, email, mobile });
     user.save().then(() => {
         res.send({ message: 'saved successfully' })
 
@@ -112,8 +116,8 @@ app.post('/sell', upload.single('image'), (req, res) => {
     const quantity = req.body.quantity;
     const description = req.body.description;
     const image = req.file.path;
-    const addedby=req.body.userId;
-    const spdt = new saleProducts({ name: name, category: category, price: price, quantity: quantity, description: description, image: image , addedby });
+    const addedby = req.body.userId;
+    const spdt = new saleProducts({ name: name, category: category, price: price, quantity: quantity, description: description, image: image, addedby });
     spdt.save().then(() => {
         res.send({ message: 'saved successfully' })
 
@@ -125,10 +129,10 @@ app.post('/sell', upload.single('image'), (req, res) => {
 
 app.get('/get-product', (req, res) => {
 
-    const catname=req.query.catname;
-    let O={};
-    if(catname){
-        O={category:catname}
+    const catname = req.query.catname;
+    let O = {};
+    if (catname) {
+        O = { category: catname }
     }
     console.log(catname);
 
@@ -164,9 +168,9 @@ app.post('/cart', (req, res) => {
         })
 })
 
-app.get('/productdetails/:productId',(req,res)=>{
+app.get('/productdetails/:productId', (req, res) => {
     console.log(req.params);
-    
+
     saleProducts.findOne({ _id: req.params.productId })
         .then((result) => {
             res.send({ message: 'success', product: result })
@@ -177,8 +181,8 @@ app.get('/productdetails/:productId',(req,res)=>{
 })
 
 
-app.get('/search',(req,res)=>{
-    let search=req.query.search;
+app.get('/search', (req, res) => {
+    let search = req.query.search;
     // console.log(search);
     let searchRegex = new RegExp(search, 'i');
     // console.log(req.query);
@@ -187,19 +191,19 @@ app.get('/search',(req,res)=>{
         $or: [
             { name: { $regex: searchRegex } },
             { description: { $regex: searchRegex } },
-            { category: { $regex: searchRegex  } },
+            { category: { $regex: searchRegex } },
         ],
     })
-    .then((results) => {
-        // console.log(results, 'user data');
-        res.send({ message: 'success', products: results })
-    }).catch((err) => {
-        res.send({ message: 'server error' })
-    })
+        .then((results) => {
+            // console.log(results, 'user data');
+            res.send({ message: 'success', products: results })
+        }).catch((err) => {
+            res.send({ message: 'server error' })
+        })
 
 })
 
-app.get('/get-user/:uId',(req,res)=>{
+app.get('/get-user/:uId', (req, res) => {
     const _userId = req.params.uId;
     Users.findOne({ _id: _userId })
         .then((result) => {

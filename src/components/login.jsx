@@ -32,7 +32,7 @@ const LoginSection = () => {
     }
 
     return (
-        <div className='mt-[10rem]'>
+        <div className='mt-[5rem]'>
             <div className="max-w-sm mx-auto bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <div className="mb-5 ">
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
