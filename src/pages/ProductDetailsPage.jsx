@@ -43,7 +43,7 @@ const ProductDetails = () => {
 
     const Contact = (addedby) => {
         console.log('id', addedby)
-        const url = API_URL + '/get-user/' + addedby;
+        const url = 'http://localhost:3000/get-user/' + addedby;
         axios.get(url)
             .then((res) => {
                 if (res.data.user) {
@@ -71,10 +71,10 @@ const ProductDetails = () => {
                     <h3 className="m-2 price-text"> Rs. {product.price} /- </h3>
                     <p className="m-2"> {product.name}  | {product.category} </p>
                     <p className="m-2 text-success"> {product.description} </p>
-                    {product.addedBy &&
-                        <button onClick={() => Contact(product.addedBy)}>
+                    {/* {product.addedby && */}
+                        <button onClick={() => Contact(product.addedby)}>
                             SHOW CONTACT DETAILS
-                        </button>}
+                        </button>
 
                 </div>
             </div>}

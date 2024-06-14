@@ -44,7 +44,7 @@ const saleProducts = mongoose.model('saleProducts', {
     quantity: Number, 
     description: String, 
     image: String,
-    addedby:mongoose.Schema.Types.ObjectId
+    addedby: mongoose.Schema.Types.ObjectId,
  });
 
 app.use(cors());
@@ -113,7 +113,7 @@ app.post('/sell', upload.single('image'), (req, res) => {
     const description = req.body.description;
     const image = req.file.path;
     const addedby=req.body.userId;
-    const spdt = new saleProducts({ name: name, category: category, price: price, quantity: quantity, description: description, image: image ,addedby});
+    const spdt = new saleProducts({ name: name, category: category, price: price, quantity: quantity, description: description, image: image , addedby });
     spdt.save().then(() => {
         res.send({ message: 'saved successfully' })
 
@@ -199,7 +199,22 @@ app.get('/search',(req,res)=>{
 
 })
 
-
+app.get('/get-user/:uId',(req,res)=>{
+    const _userId = req.params.uId;
+    Users.findOne({ _id: _userId })
+        .then((result) => {
+            res.send({
+                message: 'success.', user: {
+                    email: result.email,
+                    mobile: result.mobile,
+                    username: result.username
+                }
+            })
+        })
+        .catch(() => {
+            res.send({ message: 'server err' })
+        })
+})
 
 app.listen(port, () => {
     console.log(`listening to the port ${port}`);
