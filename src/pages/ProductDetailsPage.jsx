@@ -5,6 +5,8 @@ import NavSection from "../components/nav";
 
 const ProductDetails = () => {
     const [product, setproduct] = useState()
+    const [user, setuser] = useState()
+    
     // const [user, setuser] = useState()
     // console.log(user, "userrrrr")
     const p = useParams()
@@ -43,12 +45,14 @@ const ProductDetails = () => {
 
     const Contact = (addedby) => {
         console.log('id', addedby)
+        // return;
         const url = 'http://localhost:3000/get-user/' + addedby;
         axios.get(url)
             .then((res) => {
                 if (res.data.user) {
                     setuser(res.data.user)
                 }
+                
             })
             .catch((err) => {
                 alert('Server Err.')
@@ -71,10 +75,12 @@ const ProductDetails = () => {
                     <h3 className="m-2 price-text"> Rs. {product.price} /- </h3>
                     <p className="m-2"> {product.name}  | {product.category} </p>
                     <p className="m-2 text-success"> {product.description} </p>
-                    {/* {product.addedby && */}
-                        <button onClick={() => Contact(product.addedby)}>
+                    {product.addedby &&
+                        <button className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        onClick={() => Contact(product.addedby)}>
                             SHOW CONTACT DETAILS
-                        </button>
+                        </button>}
+                    {user&&user.username&&<h4 className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{user.username}</h4>}
 
                 </div>
             </div>}
