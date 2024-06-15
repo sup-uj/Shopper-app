@@ -12,10 +12,11 @@ import Product from './pages/ProductPage.jsx';
 import Cart from './pages/CartPage.jsx';
 import ProductDetails from './pages/ProductDetailsPage.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
+import Mypdts from './pages/MyProductsPage.jsx';
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
           <Route  path="/products" element={<Product/>}></Route>
           <Route  path="/cart" element={<Cart/>}></Route>
           <Route  path="/productdetails/:pId" element={<ProductDetails/>}></Route>
+          <Route  path="/my-products" element={<Mypdts/>}></Route>
           {/* <Route  path="/profile" element={<ProfilePage/>}></Route>
           <Route  path="/profileupdate" element={<ProfileUpdatePage/>}></Route>
           <Route  path="/lend" element={<LendItemPage/>}></Route>

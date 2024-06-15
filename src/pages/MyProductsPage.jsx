@@ -1,36 +1,31 @@
 import { React, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NavSection from '../components/nav';
 import Category from '../components/categories';
 import { useState } from 'react';
-
-
-const CategoryPage = (props) => {
+const Mypdts = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             navigate('/login')
         }
     }, [])
-
-    const params=useParams();
-    console.log(params);
-
     const [products, setproducts] = useState([]);
 
     useEffect(() => {
-        const url = 'http://localhost:3000/get-product?catname='+params.catname;
-        axios.get(url).then((result) => {
-            // console.log(result);
-            if (result.data.products) {
-                setproducts(result.data.products)
-            }
-        }).catch((err) => {
-            console.log(err);
-            alert('Server error');
-        })
-    }, [params])
+        const url = 'http://localhost:3000/my-products';
+        let data = { userId: localStorage.getItem('userId') }
+        axios.post(url, data)
+            .then((res) => {
+                if (res.data.products) {
+                    setproducts(res.data.products);
+                }
+            })
+            .catch((err) => {
+                alert('Server Err.')
+            })
+    }, [])
 
     const [temp_pdt, settemp_pdt] = useState([]);
 
@@ -50,33 +45,18 @@ const CategoryPage = (props) => {
     const click = () => {
         // console.log('clicked');
         // console.log('temp1', temp_pdt);
-        // settemp_pdt(products);
+        settemp_pdt(products);
         // console.log('products', products);
         // console.log('temp', temp_pdt);
-        // let filteredPdts = products.filter((item) => {
-        //   if (item.name.toLowerCase().includes(search.toLowerCase()) || item.price.toLowerCase().includes(search.toLowerCase()) || item.description.toLowerCase().includes(search.toLowerCase()) || item.category.toLowerCase().includes(search.toLowerCase())) {
-        //     return item;
-        //   }
-        // })
-        // console.log('filtered',filteredPdts);
-        // settemp_pdt(filteredPdts);
-        // console.log('temp_pdt',temp_pdt);
-    
-        const url = 'http://localhost:3000/search?search='+search;
-        axios.get(url)
-            .then((res) => {
-                // console.log(res); 
-                settemp_pdt(res.data.products)
-                // if (res.data.message) {
-                //     alert('Item added.')
-                // }
-            })
-            .catch((err) => {
-                alert('Server Err.')
-            })
-    
-      }
-     
+        let filteredPdts = products.filter((item) => {
+            if (item.name.toLowerCase().includes(search.toLowerCase()) || item.price.toLowerCase().includes(search.toLowerCase()) || item.description.toLowerCase().includes(search.toLowerCase()) || item.category.toLowerCase().includes(search.toLowerCase())) {
+                return item;
+            }
+        })
+        // console.log('filtered', filteredPdts);
+        settemp_pdt(filteredPdts);
+        // console.log('temp_pdt', temp_pdt);
+    }
 
 
     const filters = (val) => {
@@ -98,55 +78,55 @@ const CategoryPage = (props) => {
 
     // const A=[];
     // const [cartpdt,setcartpdt]=useState(A)
-    const Addcart = (productId) => {
-        let userId = localStorage.getItem('userId');
-
-        if (!userId) {
-            alert('Please Login first.')
-            return;
-        }
-
+    const Addcart = (value) => {
+        console.log('clci')
+        console.log('val', value);
+        // A.push(value);
+        // setcartpdt(A);
+        // const data=cartpdt;
+        console.log(value.name);
+        const formdata = new FormData();
+        formdata.append('name', value.name);
+        formdata.append('category', value.category);
+        formdata.append('price', value.price);
+        formdata.append('quantity', value.quantity);
+        formdata.append('description', value.description);
+        formdata.append('image', value.image);
+        console.log(formdata);
         const url = 'http://localhost:3000/add-cart';
-        const data = { userId, productId }
-        axios.post(url, data)
-            .then((res) => {
-                if (res.data.message) {
-                    alert('Item added.')
-                }
-            })
-            .catch((err) => {
-                alert('Server Err.')
-            })
+        axios.post(url, formdata).then((result) => {
+            console.log(result.data);
+            if (result.data.message) {
+                alert(result.data.message);
+                navigate('/cart');
+            }
+
+        }).catch((err) => {
+            console.log(err);
+            alert('Server error');
+        })
     }
 
-    const details=(id)=>{
-        navigate('/productdetails/'+id);
-    }
 
     return (
         <>
             <NavSection search={search} searchItem={searchItem} click={click} />
             <Category  filters={filters}/>
             <div className='flex justify-center flex-wrap gap-2 mt-[133px]'>
-                {temp_pdt&&temp_pdt.length==0&&<h1 className='font-size-[40px] mt-[160px]'>No Match</h1>}
+            {temp_pdt&&temp_pdt.length==0&&<h1 className='font-size-[40px] mt-[160px]'>No Product Found</h1>}
                 {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
                     return (
-                        <div onClick={()=>details(item._id)}
-                        className="hover:cursor-pointer w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            {/* <a href="#"> */}
+                        <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <img height=''
                                     className="p-8 rounded-t-lg"
                                     src={'http://localhost:3000/' + item.image}
                                     alt="product image"
                                 />
-                            {/* </a> */}
                             <div className="px-5 pb-5">
-                                {/* <a href="#"> */}
                                     <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                                         <span >{item.name}</span> | {item.category}
 
                                     </h5>
-                                {/* </a> */}
                                 <div className="flex items-center mt-2.5 mb-5">
                                     <div className="flex items-center space-x-1 rtl:space-x-reverse">
                                         <svg
@@ -163,19 +143,11 @@ const CategoryPage = (props) => {
                                     <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
                                         5.0
                                     </span>
+                                    
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className=" text-3xl font-bold text-gray-900 dark:text-white">Rs.{item.price}</span>
-                                    <span
-                                        onClick={() => {
-                                            Addcart(item._id);
-                                        }}
-                                        to='/cart'
-                                        className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                        Add to cart
-                                    </span>
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     )
@@ -188,4 +160,4 @@ const CategoryPage = (props) => {
 
 }
 
-export default CategoryPage
+export default Mypdts

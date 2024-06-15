@@ -17,10 +17,13 @@ const NavSection = (props) => {
 
     async function sellfunc() {
         navigate("/sell");
-     }
-     async function pffunc() {
+    }
+    async function pffunc() {
         navigate("/profile");
-     }
+    }
+    async function myads() {
+        navigate("/my-products");
+    }
 
     return (
         <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -55,30 +58,25 @@ const NavSection = (props) => {
                                 color: '#fff',
                                 fontSize: '14px',
                                 borderRadius: '50%',
-                                cursor:'pointer'
+                                cursor: 'pointer'
                             }} >  N </div>}
                     {
                         showOver &&
                         <div className="absolute top-[75px] right-0 z-10  mr-14 h-[112px] w-52 bg-blue-200 text-red-500 text-sm ">
                             <div className='w-full bg-blue-900 h-8  flex justify-center items-center'>
-                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={sellfunc}>Sell</Button>
+                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={sellfunc}>Sell</Button>
                             </div>
                             <div className='w-full bg-blue-900 h-8 flex justify-center items-center mt-[5px]'>
-                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={pffunc}>Profile</Button>
+                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={pffunc}>Profile</Button>
                             </div>
                             <div className='w-full bg-blue-900 h-8 flex mt-[5px ] justify-center items-center mt-[5px]'>
-                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
+                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
                             </div>
-                            {/* <div className='w-full bg-blue-900 h-8'>
-                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
+                            <div className='w-full bg-blue-900 h-8 flex mt-[5px ] justify-center items-center mt-[5px]'>
+                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={myads}>My Products</Button>
                             </div>
-                            <div className='w-full bg-blue-900 h-8'>
-                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
-                            </div>
-                            <div className='w-full bg-blue-900 h-8'>
 
-                            </div> */}
-                            
+
                         </div>
                     }
 

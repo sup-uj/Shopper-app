@@ -220,6 +220,18 @@ app.get('/get-user/:uId', (req, res) => {
         })
 })
 
+app.post('/my-products',(req,res)=>{
+    const userId = req.body.userId;
+
+    saleProducts.find({ addedby: userId })
+        .then((result) => {
+            res.send({ message: 'success', products: result })
+        })
+        .catch((err) => {
+            res.send({ message: 'server err' })
+        })
+})
+
 app.listen(port, () => {
     console.log(`listening to the port ${port}`);
 })
