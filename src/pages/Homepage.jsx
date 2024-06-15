@@ -10,11 +10,11 @@ const HomePage = () => {
 
     //for auth
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!localStorage.getItem('token')) {
-            navigate('/login')
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (!localStorage.getItem('token')) {
+    //         navigate('/login')
+    //     }
+    // }, [])
 
 
     const [products, setproducts] = useState([]);
@@ -97,13 +97,15 @@ const HomePage = () => {
 
     }
 
-    const Addcart = (productId) => {
+    const Addcart = (productId,e) => {
+        e.stopPropagation();
         let userId = localStorage.getItem('userId');
 
         if (!userId) {
             alert('Please Login first.')
             return;
         }
+        // navigate('/cart');
 
         const url = 'http://localhost:3000/add-cart';
         const data = { userId, productId }
@@ -118,7 +120,9 @@ const HomePage = () => {
             })
     }
 
-
+    const details=(id)=>{
+        navigate('/productdetails/'+id);
+    }
 
     return (
         
@@ -129,7 +133,8 @@ const HomePage = () => {
             <div className='flex justify-center flex-wrap gap-2 mt-[10px]'>
                 {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
                     return (
-                        <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div onClick={()=>details(item._id)}
+                        className="cursor-pointer w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                             {/* <a href="#"> */}
                             <img height=''
                                 className="p-8 rounded-t-lg"
@@ -165,8 +170,8 @@ const HomePage = () => {
                                     <span className="text-3xl font-bold text-gray-900 dark:text-white">Rs.{item.price}</span>
                                     <Link
                                         to="/cart" // Add the 'to' attribute if needed
-                                        onClick={() => {
-                                            Addcart(item._id);
+                                        onClick={(e) => {
+                                            Addcart(item._id,e);
                                         }}
                                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     >

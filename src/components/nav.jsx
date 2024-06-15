@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
 import cart_icon from "../assets/cart_icon.png"
+import Sbar from './sidebar';
 
 
 const NavSection = (props) => {
     const navigate = useNavigate();
+    const [showOver, setshowOver] = useState(false)
 
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         navigate('/login');
     }
+
+    async function sellfunc() {
+        navigate("/sell");
+     }
+     async function pffunc() {
+        navigate("/profile");
+     }
 
     return (
         <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -22,7 +31,7 @@ const NavSection = (props) => {
                 </Link>
 
                 <div className="flex gap-3 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                    {localStorage.getItem('token')&&
+                    {localStorage.getItem('token') &&
                         <Link to='/cart' className='flex item-center gap-0'>
 
                             <img src={cart_icon} alt="" />
@@ -30,23 +39,48 @@ const NavSection = (props) => {
                                 0
                             </div>
                         </Link>}
-                    {!localStorage.getItem('token') ? <Button color="light"><Link to='/login'>Login</Link></Button> : 
-                    // <Button color="light" onClick={logout}>Logout</Button>}
-                    <div className='bg-blue-700 hover:bg-blue-800'
-                    onClick={() => {
-                        setshowOver(!showOver)
-                    }}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        // background: '#002f34',
-                        width: '40px',
-                        height: '40px',
-                        color: '#fff',
-                        fontSize: '14px',
-                        borderRadius: '50%'
-                    }} >  N </div>}
+                    {!localStorage.getItem('token') ? <Button color="light"><Link to='/login'>Login</Link></Button> :
+                        // <Button color="light" onClick={logout}>Logout</Button>}
+                        <div className='bg-blue-700 hover:bg-blue-800'
+                            onClick={() => {
+                                setshowOver(!showOver)
+                            }}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                // background: '#002f34',
+                                width: '40px',
+                                height: '40px',
+                                color: '#fff',
+                                fontSize: '14px',
+                                borderRadius: '50%',
+                                cursor:'pointer'
+                            }} >  N </div>}
+                    {
+                        showOver &&
+                        <div className="absolute top-[75px] right-0 z-10  mr-14 h-[112px] w-52 bg-blue-200 text-red-500 text-sm ">
+                            <div className='w-full bg-blue-900 h-8  flex justify-center items-center'>
+                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={sellfunc}>Sell</Button>
+                            </div>
+                            <div className='w-full bg-blue-900 h-8 flex justify-center items-center mt-[5px]'>
+                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={pffunc}>Profile</Button>
+                            </div>
+                            <div className='w-full bg-blue-900 h-8 flex mt-[5px ] justify-center items-center mt-[5px]'>
+                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
+                            </div>
+                            {/* <div className='w-full bg-blue-900 h-8'>
+                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
+                            </div>
+                            <div className='w-full bg-blue-900 h-8'>
+                            <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
+                            </div>
+                            <div className='w-full bg-blue-900 h-8'>
+
+                            </div> */}
+                            
+                        </div>
+                    }
 
                     {!localStorage.getItem('token') ? <button type="button" className="mt-0 mr-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link to='/signup'>Sign Up</Link>
 
@@ -59,37 +93,37 @@ const NavSection = (props) => {
                         </svg>
                     </button>
                 </div>
-                {localStorage.getItem('token')&&
-                <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                {localStorage.getItem('token') &&
+                    <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
 
-                    <div className="relative text-gray-600 focus-within:text-gray-400">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                            <button type="submit" className="p-1 focus:outline-none focus:shadow-outline">
-                                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" className="w-6 h-6">
-                                    <path d="M21 21l-6-6M9 2a7 7 0 110 14 7 7 0 010-14z"></path>
-                                </svg>
+                        <div className="relative text-gray-600 focus-within:text-gray-400">
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                                <button type="submit" className="p-1 focus:outline-none focus:shadow-outline">
+                                    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" className="w-6 h-6">
+                                        <path d="M21 21l-6-6M9 2a7 7 0 110 14 7 7 0 010-14z"></path>
+                                    </svg>
+                                </button>
+                            </span>
+                            <input
+                                value={props && props.search}
+                                onChange={(e) => {
+                                    props.searchItem && props.searchItem(e.target.value);
+                                }}
+                                type="search"
+                                name="search"
+                                placeholder="Search..."
+                                className="py-2 pl-10 pr-4 border border-gray-300 rounded-tl-md rounded-bl-md focus:outline-none focus:border-gray-500"
+                            />
+                            <button
+                                onClick={() => {
+                                    props.click && props.click()
+                                }}
+                                type="button" className=" h-[42px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-tr-md rounded-br-md rounded-bl-none rounded-tl-none text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search
+
                             </button>
-                        </span>
-                        <input
-                            value={props && props.search}
-                            onChange={(e) => {
-                                props.searchItem && props.searchItem(e.target.value);
-                            }}
-                            type="search"
-                            name="search"
-                            placeholder="Search..."
-                            className="py-2 pl-10 pr-4 border border-gray-300 rounded-tl-md rounded-bl-md focus:outline-none focus:border-gray-500"
-                        />
-                        <button
-                            onClick={() => {
-                                props.click && props.click()
-                            }}
-                            type="button" className=" h-[42px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-tr-md rounded-br-md rounded-bl-none rounded-tl-none text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search
+                        </div>
 
-                        </button>
-                    </div>
-
-                </div>}
+                    </div>}
             </div>
         </nav>
     );

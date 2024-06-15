@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
-    <div className='mt-[75px]'>
+    <div className='mt-[71px]'>
       <div className="z-50 bg-cover bg-center h-screen flex items-center text-white bg bg-blue-100">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">Making a Deal is a breeze </h1>
