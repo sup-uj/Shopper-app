@@ -9,6 +9,7 @@ const NavSection = (props) => {
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         navigate('/login');
     }
 
@@ -29,7 +30,23 @@ const NavSection = (props) => {
                                 0
                             </div>
                         </Link>}
-                    {!localStorage.getItem('token') ? <Button color="light"><Link to='/login'>Login</Link></Button> : <Button color="light" onClick={logout}>Logout</Button>}
+                    {!localStorage.getItem('token') ? <Button color="light"><Link to='/login'>Login</Link></Button> : 
+                    // <Button color="light" onClick={logout}>Logout</Button>}
+                    <div className='bg-blue-700 hover:bg-blue-800'
+                    onClick={() => {
+                        setshowOver(!showOver)
+                    }}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        // background: '#002f34',
+                        width: '40px',
+                        height: '40px',
+                        color: '#fff',
+                        fontSize: '14px',
+                        borderRadius: '50%'
+                    }} >  N </div>}
 
                     {!localStorage.getItem('token') ? <button type="button" className="mt-0 mr-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><Link to='/signup'>Sign Up</Link>
 
@@ -42,6 +59,7 @@ const NavSection = (props) => {
                         </svg>
                     </button>
                 </div>
+                {localStorage.getItem('token')&&
                 <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
 
                     <div className="relative text-gray-600 focus-within:text-gray-400">
@@ -71,7 +89,7 @@ const NavSection = (props) => {
                         </button>
                     </div>
 
-                </div>
+                </div>}
             </div>
         </nav>
     );

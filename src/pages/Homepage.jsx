@@ -118,7 +118,10 @@ const HomePage = () => {
             })
     }
 
+
+
     return (
+        
         <>
             <NavSection search={search} searchItem={searchItem} click={click} />
             {/* <Category filters={filters} /> */}

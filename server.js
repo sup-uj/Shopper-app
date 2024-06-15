@@ -68,7 +68,7 @@ app.post('/signup', (req, res) => {
     user.save().then(() => {
         res.send({ message: 'saved successfully' })
 
-    }).catch(() => {
+    }).catch(() => { 
         res.send({ message: 'server error' });
     })
 })
