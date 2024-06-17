@@ -70,10 +70,10 @@ const NavSection = (props) => {
                                 <Button className='w-full rounded-none mt-[5px]' color="light" onClick={pffunc}>Profile</Button>
                             </div>
                             <div className='w-full bg-blue-900 h-8 flex mt-[5px ] justify-center items-center mt-[5px]'>
-                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
+                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={myads}>My Products</Button>
                             </div>
                             <div className='w-full bg-blue-900 h-8 flex mt-[5px ] justify-center items-center mt-[5px]'>
-                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={myads}>My Products</Button>
+                                <Button className='w-full rounded-none mt-[5px]' color="light" onClick={logout}>Logout</Button>
                             </div>
 
 

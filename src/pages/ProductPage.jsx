@@ -118,6 +118,36 @@ const Product = (props) => {
         navigate('/productdetails/'+id);
     }
 
+    const handleOpenRazorpay=(data)=>{
+        const options = {
+            key: 'rzp_test_LQiyGHbGt01Yn1',
+            amount: Number(data.amount),
+            currency: data.currency,
+            order_id: data.id,
+            name: 'MNNIT SHOPPERS',//
+            description: 'XYZ',//
+            handler: function (response) {
+                console.log(response, "1")
+                
+            }
+
+        }
+        const rzp = new window.Razorpay(options)
+        rzp.open()
+    }
+
+    const payment=(amount,e)=>{
+        e.stopPropagation();
+        const _data = { amount: amount }
+        axios.post('http://localhost:3000/orders', _data)
+            .then(res => {
+                console.log(res.data, "2")
+                handleOpenRazorpay(res.data.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     return (
         <>
             <NavSection search={search} searchItem={searchItem} click={click} />
@@ -128,48 +158,39 @@ const Product = (props) => {
                     return (
                         <div onClick={()=>details(item._id)}
                         className="hover:cursor-pointer w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            {/* <a href="#"> */}
                                 <img height=''
                                     className="p-8 rounded-t-lg"
                                     src={'http://localhost:3000/' + item.image}
                                     alt="product image"
                                 />
-                            {/* </a> */}
                             <div className="px-5 pb-5">
-                                {/* <a href="#"> */}
-                                    <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white items-center justify-center">
                                         <span >{item.name}</span> | {item.category}
 
                                     </h5>
-                                {/* </a> */}
-                                <div className="flex items-center mt-2.5 mb-5">
-                                    <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                                        <svg
-                                            className="w-4 h-4 text-yellow-300"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 22 20"
-                                        >
-                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                                        </svg>
-                                        {/* Repeat the above SVG for each star */}
-                                    </div>
-                                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-                                        5.0
-                                    </span>
-                                </div>
                                 <div className="flex items-center justify-between">
                                     <span className=" text-3xl font-bold text-gray-900 dark:text-white">Rs.{item.price}</span>
-                                    <span
+                                </div>
+                                <div className="flex items-center justify-center gap-2 mt-4">
+                                <span
                                         style={{ cursor: 'pointer' }}
                                         onClick={(e) => {
                                             Addcart(item._id,e);
                                         }}
                                         to='/cart'
-                                        className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
                                     >
                                         Add to cart
+                                    </span>
+                                    <span
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(e) => {
+                                            payment(item.price,e);
+                                        }}
+                                        to='/cart'
+                                        className="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >
+                                        Buy Now
                                     </span>
                                 </div>
                             </div>

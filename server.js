@@ -8,8 +8,10 @@ const app = express();
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import Razorpay from 'razorpay';
 const port = 3000;
-
+const KEY_ID='rzp_test_LQiyGHbGt01Yn1';
+const KEY_SECRET='Wp93wtsBcioCR8H6eLvhPqlW';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -230,6 +232,23 @@ app.post('/my-products',(req,res)=>{
         .catch((err) => {
             res.send({ message: 'server err' })
         })
+})
+
+
+app.post('/orders',(req,res)=>{
+    let instance = new Razorpay({ key_id: KEY_ID, key_secret: KEY_SECRET })
+
+    var options = {
+        amount: req.body.amount * 100,  // amount in the smallest currency unit
+        currency: "INR",
+    };
+
+    instance.orders.create(options, function (err, order) {
+        if (err) {
+            return res.send({ code: 500, message: 'Server Err.' })
+        }
+        return res.send({ code: 200, message: 'order created', data: order })
+    });
 })
 
 app.listen(port, () => {
