@@ -4,11 +4,14 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from 'cors';
 import path from 'path';
-const app = express();
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import multer from 'multer';
 import Razorpay from 'razorpay';
+import crypto from 'crypto';
+
+const app = express();
+
 const port = 3000;
 const KEY_ID='rzp_test_LQiyGHbGt01Yn1';
 const KEY_SECRET='Wp93wtsBcioCR8H6eLvhPqlW';
@@ -250,6 +253,23 @@ app.post('/orders',(req,res)=>{
         return res.send({ code: 200, message: 'order created', data: order })
     });
 })
+
+app.post('/verify',(req,res)=>{
+    let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
+
+    var expectedSignature = crypto.createHmac('sha256', KEY_SECRET)
+        .update(body.toString())
+        .digest('hex');
+
+    if (expectedSignature === req.body.response.razorpay_signature) {
+        res.send({ code: 200, message: 'Sign Valid' });
+    } else {
+
+        res.send({ code: 500, message: 'Sign Invalid' });
+    }
+})
+
+
 
 app.listen(port, () => {
     console.log(`listening to the port ${port}`);

@@ -127,8 +127,15 @@ const Product = (props) => {
             name: 'MNNIT SHOPPERS',//
             description: 'XYZ',//
             handler: function (response) {
-                console.log(response, "1")
-                
+                console.log(response, "34")
+                axios.post('http://localhost:3000/verify', { response: response })
+                    .then(res => {
+                        console.log(res, "37")
+                        // your orders
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
             }
 
         }
@@ -141,7 +148,7 @@ const Product = (props) => {
         const _data = { amount: amount }
         axios.post('http://localhost:3000/orders', _data)
             .then(res => {
-                console.log(res.data, "2")
+                console.log(res.data, "29")
                 handleOpenRazorpay(res.data.data)
             })
             .catch(err => {
