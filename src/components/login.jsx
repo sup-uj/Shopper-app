@@ -4,13 +4,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 
-const LoginSection = () => {
+const LoginSection = ({ setFirstLetter }) => {
     const navigate=useNavigate();
     const [username ,setusername] =useState('');
     const [password ,setpassword] =useState('');
 
     const handleApi = ()=>{
         console.log({username,password});
+        const firstLetter = username.charAt(0).toUpperCase();
+        console.log(firstLetter);
+        
         // return;
         const url='http://localhost:3000/login';
         const data={username,password};
@@ -21,6 +24,7 @@ const LoginSection = () => {
                 if(result.data.token){
                     localStorage.setItem('token',result.data.token);
                     localStorage.setItem('userId',result.data.userId);
+                    setFirstLetter(firstLetter);
                     navigate('/');
                 }
             }

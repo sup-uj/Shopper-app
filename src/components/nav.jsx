@@ -59,7 +59,7 @@ const NavSection = (props) => {
                                 fontSize: '14px',
                                 borderRadius: '50%',
                                 cursor: 'pointer'
-                            }} >  N </div>}
+                            }} >{console.log(props)} </div>}
                     {
                         showOver &&
                         <div className="absolute top-[75px] right-0 z-10  mr-14 h-[112px] w-52 bg-blue-200 text-red-500 text-sm ">

@@ -6,16 +6,17 @@ import Category from '../components/categories';
 import { useState } from 'react';
 const Product = (props) => {
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!localStorage.getItem('token')) {
-            navigate('/login')
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (!localStorage.getItem('token')) {
+    //         navigate('/login')
+    //     }
+    // }, [])
     const [products, setproducts] = useState([]);
 
     useEffect(() => {
         const url = 'http://localhost:3000/get-product';
-        axios.get(url).then((result) => {
+        const headers ={Authorization:localStorage.getItem('token')}
+        axios.get(url,{headers}).then((result) => {
             // console.log(result);
             if (result.data.products) {
                 setproducts(result.data.products)
@@ -160,7 +161,7 @@ const Product = (props) => {
             <NavSection search={search} searchItem={searchItem} click={click} />
             <Category  filters={filters}/>
             <div className='flex justify-center flex-wrap gap-2 mt-[133px]'>
-                {/* {temp_pdt&&temp_pdt.length==0&&<h1 className='font-size-[40px]'>No Match</h1>} */}
+            {temp_pdt&&temp_pdt.length==0&&<h1 className='font-size-[40px] mt-[160px]'>No Match</h1>}
                 {temp_pdt && temp_pdt.length > 0 && temp_pdt.map((item, index) => {
                     return (
                         <div onClick={()=>details(item._id)}

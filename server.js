@@ -9,12 +9,13 @@ import mongoose from 'mongoose';
 import multer from 'multer';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
-
+import checkToken from './middleware/auth.js';
+import { Schema } from 'mongoose';
 const app = express();
 
 const port = 3000;
-const KEY_ID='rzp_test_LQiyGHbGt01Yn1';
-const KEY_SECRET='Wp93wtsBcioCR8H6eLvhPqlW';
+const KEY_ID = 'rzp_test_LQiyGHbGt01Yn1';
+const KEY_SECRET = 'Wp93wtsBcioCR8H6eLvhPqlW';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -44,6 +45,7 @@ const Users = mongoose.model('Users', {
     mobile: String,
     cartProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'saleProducts' }]
 });
+//sale products schema -sell 
 const saleProducts = mongoose.model('saleProducts', {
     name: String,
     category: String,
@@ -54,6 +56,15 @@ const saleProducts = mongoose.model('saleProducts', {
     addedby: mongoose.Schema.Types.ObjectId,
 });
 
+const roleschema = new Schema({
+    role: String,
+    Permissions: [{ type: String }]
+})
+
+const role = mongoose.model('roles', roleschema)
+
+
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -62,6 +73,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', (req, res) => {
     res.send('hello');
 })
+
+
+//signup api
 app.post('/signup', (req, res) => {
     console.log(req.body);
     // return ;
@@ -73,11 +87,12 @@ app.post('/signup', (req, res) => {
     user.save().then(() => {
         res.send({ message: 'saved successfully' })
 
-    }).catch(() => { 
+    }).catch(() => {
         res.send({ message: 'server error' });
     })
 })
 
+//login api
 app.post('/login', (req, res) => {
     console.log(req.body);
     // return ;
@@ -105,12 +120,13 @@ app.post('/login', (req, res) => {
             }
 
         }).catch((err) => {
-            console.log(err);
+            // console.log(err);
             res.send({ message: 'server error' });
         })
 })
 
 
+//sell product api
 app.post('/sell', upload.single('image'), (req, res) => {
     // console.log('hello');
     console.log(req.body);
@@ -132,7 +148,8 @@ app.post('/sell', upload.single('image'), (req, res) => {
 })
 
 
-app.get('/get-product', (req, res) => {
+//view sell product api
+app.get('/get-product', checkToken, (req, res) => {
 
     const catname = req.query.catname;
     let O = {};
@@ -150,6 +167,8 @@ app.get('/get-product', (req, res) => {
 })
 
 
+
+//add to cart api
 app.post('/add-cart', upload.single('image'), async (req, res) => {
     let productId = req.body.productId;
     let userId = req.body.userId;
@@ -163,6 +182,8 @@ app.post('/add-cart', upload.single('image'), async (req, res) => {
         })
 })
 
+
+// view cart product api 
 app.post('/cart', (req, res) => {
     Users.findOne({ _id: req.body.userId }).populate('cartProducts')
         .then((result) => {
@@ -173,6 +194,8 @@ app.post('/cart', (req, res) => {
         })
 })
 
+
+//show product details api
 app.get('/productdetails/:productId', (req, res) => {
     console.log(req.params);
 
@@ -185,7 +208,7 @@ app.get('/productdetails/:productId', (req, res) => {
         })
 })
 
-
+//search function api
 app.get('/search', (req, res) => {
     let search = req.query.search;
     // console.log(search);
@@ -208,6 +231,8 @@ app.get('/search', (req, res) => {
 
 })
 
+
+//upload user of given product api
 app.get('/get-user/:uId', (req, res) => {
     const _userId = req.params.uId;
     Users.findOne({ _id: _userId })
@@ -225,7 +250,8 @@ app.get('/get-user/:uId', (req, res) => {
         })
 })
 
-app.post('/my-products',(req,res)=>{
+//my ads api
+app.post('/my-products', (req, res) => {
     const userId = req.body.userId;
 
     saleProducts.find({ addedby: userId })
@@ -237,8 +263,8 @@ app.post('/my-products',(req,res)=>{
         })
 })
 
-
-app.post('/orders',(req,res)=>{
+//payment order api
+app.post('/orders', (req, res) => {
     let instance = new Razorpay({ key_id: KEY_ID, key_secret: KEY_SECRET })
 
     var options = {
@@ -254,7 +280,9 @@ app.post('/orders',(req,res)=>{
     });
 })
 
-app.post('/verify',(req,res)=>{
+
+// verify order api
+app.post('/verify', (req, res) => {
     let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
 
     var expectedSignature = crypto.createHmac('sha256', KEY_SECRET)
@@ -269,6 +297,15 @@ app.post('/verify',(req,res)=>{
     }
 })
 
+
+app.post('/add-role', (req, res) => {
+
+})
+
+
+app.post('/delete-role', (req, res) => {
+
+})
 
 
 app.listen(port, () => {

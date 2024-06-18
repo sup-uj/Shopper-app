@@ -22,7 +22,8 @@ const HomePage = () => {
 
     useEffect(() => {
         const url = 'http://localhost:3000/get-product';
-        axios.get(url).then((result) => {
+        const headers ={Authorization:localStorage.getItem('token')}
+        axios.get(url,{headers}).then((result) => {
             console.log(result);
             if (result.data.products) {
                 setproducts(result.data.products)
